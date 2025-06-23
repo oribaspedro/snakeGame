@@ -15,7 +15,7 @@ void imprimeFila(no *L) {
 	
 	printf("\n Imprime Fila: \n");	
 	while(P != NULL) {
-		cout << P->info << " ";	
+		cout << P->posx << " " << P->posy << "\n";	
 		P = P->link;
 	}	
 }

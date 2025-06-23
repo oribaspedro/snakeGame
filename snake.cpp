@@ -1,6 +1,7 @@
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
+#include <ctime>
 using namespace std;
 
 #include "Fila.h"
@@ -17,11 +18,93 @@ char getch() {
     return ch;
 }
 
+void imprimeTabuleiro(char tabuleiro[30][30], no *snake, int *ultPosx, int *ultPosy) {
+    no *P;
+    P = snake;
+    while(P != NULL) {
+        tabuleiro[snake->posx][snake->posy] = snake->info;
+        P = P->link;
+    }
+    for(int i = 0; i < 30; i++) {
+        for(int j = 0; j < 30; j++) {
+            cout << tabuleiro[i][j];
+        }
+        cout << "\n";
+    }
+}
+
+no *atualizarPosicoes(char tabuleiro[30][30], no *snake, char comando, int *ultPosx, int *ultPosy) {
+    no *P;
+    P = snake;
+    char aux;
+
+    switch(comando) {
+        case 'w':
+            P->posx -= 1;
+            P = P->link;
+            while(P != NULL) {
+                aux = P->posx;
+                P->posx = *ultPosx;
+                *ultPosx = aux;
+                switch(P->posy, *ultPosy);
+                aux = P->posy;
+                P->posy = *ultPosy;
+                *ultPosy = aux;
+                P = P->link;
+            }
+            break;
+        case 'a':
+            P->posy -= 1;
+            P = P->link;
+            while(P != NULL) {
+                aux = P->posx;
+                P->posx = *ultPosx;
+                *ultPosx = aux;
+                switch(P->posy, *ultPosy);
+                aux = P->posy;
+                P->posy = *ultPosy;
+                *ultPosy = aux;
+                P = P->link;
+            }
+            break;
+        case 's':
+            P->posx += 1;
+            P = P->link;
+            while(P != NULL) {
+                aux = P->posx;
+                P->posx = *ultPosx;
+                *ultPosx = aux;
+                switch(P->posy, *ultPosy);
+                aux = P->posy;
+                P->posy = *ultPosy;
+                *ultPosy = aux;
+                P = P->link;
+            }
+            break;
+        case 'd':
+            P->posy += 1;
+            P = P->link;
+            while(P != NULL) {
+                aux = P->posx;
+                P->posx = *ultPosx;
+                *ultPosx = aux;
+                switch(P->posy, *ultPosy);
+                aux = P->posy;
+                P->posy = *ultPosy;
+                *ultPosy = aux;
+                P = P->link;
+            }
+            break;
+    }
+    return snake;
+}
+
 int main() {
+    srand(time(NULL));
     char tabuleiro[30][30], comando;
     no *cobra;
     bool rodarJogo = true;
-    int ultPosx, ultPosy;
+    int ultPosx = 15, ultPosy = 15, posPontox, posPontoy;
 
     cobra = inicializaFila(cobra);
     cobra = insereFila(cobra, '0', 15, 15);
@@ -35,40 +118,40 @@ int main() {
             }
         }
     }
+    tabuleiro[rand()%28+1][rand()%28+1] = '@';
 
-    tabuleiro[cobra->posx][cobra->posy] = cobra->info;
-    for(int i = 0; i < 30; i++) {
+    //tabuleiro[cobra->posx][cobra->posy] = cobra->info;
+    imprimeTabuleiro(tabuleiro, cobra, &ultPosx, &ultPosy);
+    
+    /*for(int i = 0; i < 30; i++) {
         for(int j = 0; j < 30; j++) {
             cout << tabuleiro[i][j];
         }
         cout << "\n";
-    }
+    }*/
     while(rodarJogo) {
         comando = getch();
-        system("cls||clear");
+        //system("cls||clear");
         ultPosx = cobra->posx;
         ultPosy = cobra->posy;
-        switch(comando) {
-            case 'w':
-                cobra->posx -= 1;
-                break;
-            case 'a':
-                cobra->posy -= 1;
-                break;
-            case 's':
-                cobra->posx += 1;
-                break;
-            case 'd':
-                cobra->posy += 1;
-                break;
-        }
-        tabuleiro[ultPosx][ultPosy] = '.';
-        tabuleiro[cobra->posx][cobra->posy] = cobra->info;
-        for(int i = 0; i < 30; i++) {
-            for(int j = 0; j < 30; j++) {
-                cout << tabuleiro[i][j];
-            }
-            cout << "\n";
-        }
+        cobra = atualizarPosicoes(tabuleiro, cobra, comando, &ultPosx, &ultPosy);
+        if(tabuleiro[cobra->posx][cobra->posy] == '#' || tabuleiro[cobra->posx][cobra->posy] == '0') {
+            rodarJogo = false;
+        } else if(tabuleiro[cobra->posx][cobra->posy] == '@') {
+            cobra = insereFila(cobra, '0', ultPosx, ultPosy);
+            tabuleiro[rand()%28+1][rand()%28+1] = '@';
+        } else {
+            tabuleiro[ultPosx][ultPosy] = '.';
+        }  
+        imprimeTabuleiro(tabuleiro, cobra, &ultPosx, &ultPosy);
+        //imprimeFila(cobra);
+        //tabuleiro[ultPosx][ultPosy] = '.';
+        //tabuleiro[cobra->posx][cobra->posy] = cobra->info;
+        //for(int i = 0; i < 30; i++) {
+        //    for(int j = 0; j < 30; j++) {
+        //        cout << tabuleiro[i][j];
+        //    }
+        //    cout << "\n";
+        //}
     }
 }
