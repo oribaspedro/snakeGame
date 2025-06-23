@@ -107,7 +107,7 @@ int main() {
     int ultPosx = 15, ultPosy = 15, posPontox, posPontoy;
 
     cobra = inicializaFila(cobra);
-    cobra = insereFila(cobra, '0', 15, 15);
+    cobra = insereFila(cobra, 'O', 15, 15);
 
     for(int i = 0; i < 30; i++) {
         for(int j = 0; j < 30; j++) {
@@ -135,10 +135,10 @@ int main() {
         ultPosx = cobra->posx;
         ultPosy = cobra->posy;
         cobra = atualizarPosicoes(tabuleiro, cobra, comando, &ultPosx, &ultPosy);
-        if(tabuleiro[cobra->posx][cobra->posy] == '#' || tabuleiro[cobra->posx][cobra->posy] == '0') {
+        if(tabuleiro[cobra->posx][cobra->posy] == '#' || tabuleiro[cobra->posx][cobra->posy] == 'O') {
             rodarJogo = false;
         } else if(tabuleiro[cobra->posx][cobra->posy] == '@') {
-            cobra = insereFila(cobra, '0', ultPosx, ultPosy);
+            cobra = insereFila(cobra, 'O', ultPosx, ultPosy);
             tabuleiro[rand()%28+1][rand()%28+1] = '@';
         } else {
             tabuleiro[ultPosx][ultPosy] = '.';
