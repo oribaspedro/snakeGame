@@ -99,6 +99,21 @@ no *atualizarPosicoes(char tabuleiro[30][30], no *snake, char comando, int *ultP
     return snake;
 }
 
+void geradorAlimento(char tabuleiro[30][30]) {
+    int posx, posy;
+    bool posValida = false;
+
+    do {
+        posx = rand()%28+1;
+        posy = rand()%28+1;
+        if(tabuleiro[posx][posy] == '.') {
+            posValida = true;
+        }
+    } while(!(posValida));
+    
+    tabuleiro[posx][posy] = '@';
+}
+
 int main() {
     srand(time(NULL));
     char tabuleiro[30][30], comando;
@@ -118,7 +133,7 @@ int main() {
             }
         }
     }
-    tabuleiro[rand()%28+1][rand()%28+1] = '@';
+    geradorAlimento(tabuleiro);
 
     //tabuleiro[cobra->posx][cobra->posy] = cobra->info;
     imprimeTabuleiro(tabuleiro, cobra, &ultPosx, &ultPosy);
@@ -139,7 +154,7 @@ int main() {
             rodarJogo = false;
         } else if(tabuleiro[cobra->posx][cobra->posy] == '@') {
             cobra = insereFila(cobra, 'O', ultPosx, ultPosy);
-            tabuleiro[rand()%28+1][rand()%28+1] = '@';
+            geradorAlimento(tabuleiro);
         } else {
             tabuleiro[ultPosx][ultPosy] = '.';
         }  
