@@ -2,6 +2,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 #include "Fila.h"
@@ -27,7 +28,7 @@ void imprimeTabuleiro(char tabuleiro[30][30], no *snake, int *ultPosx, int *ultP
     }
     for(int i = 0; i < 30; i++) {
         for(int j = 0; j < 30; j++) {
-            cout << tabuleiro[i][j];
+            cout << setw(2) << tabuleiro[i][j];
         }
         cout << "\n";
     }
